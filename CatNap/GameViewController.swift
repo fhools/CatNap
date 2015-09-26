@@ -10,27 +10,27 @@ import UIKit
 import SpriteKit
 
 extension SKNode {
-    class func unarchiveFromFile(file : String) -> SKNode? {
-        if let path = NSBundle.mainBundle().pathForResource(file, ofType: "sks") {
-            var sceneData = NSData(contentsOfFile: path, options: .DataReadingMappedIfSafe, error: nil)!
-            var archiver = NSKeyedUnarchiver(forReadingWithData: sceneData)
-            
-            archiver.setClass(self.classForKeyedUnarchiver(), forClassName: "SKScene")
-            let scene = archiver.decodeObjectForKey(NSKeyedArchiveRootObjectKey) as! GameScene
-            archiver.finishDecoding()
-            return scene
-        } else {
-            return nil
-        }
-    }
+//    class func unarchiveFromFile(file : String) -> SKNode? {
+//        if let path = NSBundle.mainBundle().pathForResource(file, ofType: "sks") {
+//            var sceneData = NSData(contentsOfFile: path, options: .DataReadingMappedIfSafe, error: nil)!
+//            var archiver = NSKeyedUnarchiver(forReadingWithData: sceneData)
+//            
+//            archiver.setClass(self.classForKeyedUnarchiver(), forClassName: "SKScene")
+//            let scene = archiver.decodeObjectForKey(NSKeyedArchiveRootObjectKey) as! GameScene
+//            archiver.finishDecoding()
+//            return scene
+//        } else {
+//            return nil
+//        }
+//    }
 }
 
-class GameViewController: UIViewController {
+class GameViewController: UIViewController, ImageCaptureDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if let scene = GameScene.level(4) {
+        if let scene = GameScene.level(5) {
             // Configure the view.
             let skView = self.view as! SKView
             skView.showsPhysics = true
@@ -43,6 +43,7 @@ class GameViewController: UIViewController {
             /* Set the scale mode to scale to fit the window */
             scene.scaleMode = .AspectFill
             
+            scene.imageCaptureDelegate = self
             skView.presentScene(scene)
         }
     }
@@ -51,12 +52,13 @@ class GameViewController: UIViewController {
         return true
     }
 
-    override func supportedInterfaceOrientations() -> Int {
-        if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
-            return Int(UIInterfaceOrientationMask.AllButUpsideDown.rawValue)
-        } else {
-            return Int(UIInterfaceOrientationMask.All.rawValue)
-        }
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+//        if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
+//            return Int(UIInterfaceOrientationMask.AllButUpsideDown.rawValue)
+//        } else {
+//            return Int(UIInterfaceOrientationMask.All.rawValue)
+//        }
+        return UIInterfaceOrientationMask.Landscape
     }
 
     override func didReceiveMemoryWarning() {
@@ -67,4 +69,24 @@ class GameViewController: UIViewController {
     override func prefersStatusBarHidden() -> Bool {
         return true
     }
+    
+    // MARK: ImageCaptureDelegate
+    func requestImagePicker() {
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.delegate = self
+        presentViewController(imagePickerController, animated: true, completion: nil)
+        
+    }
+    
+    // MARK: ImagePickerControllerDelegate
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+        let image = info[UIImagePickerControllerOriginalImage] as! UIImage
+        picker.dismissViewControllerAnimated(true) {
+            let imageTexture = SKTexture(image: image)
+            let skView = self.view as! SKView
+            let gameScene = skView.scene as! GameScene
+            gameScene.changePhotoTexture(imageTexture)
+        }
+    }
+    
 }

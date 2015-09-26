@@ -64,6 +64,9 @@
 		4E8770A91B4E354200377F0D /* SKTTimingFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E87709D1B4E354200377F0D /* SKTTimingFunctions.swift */; };
 		4E8770AA1B4E354200377F0D /* Vector3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E87709E1B4E354200377F0D /* Vector3.swift */; };
 		4E8770AC1B50F88D00377F0D /* Level2.sks in Resources */ = {isa = PBXBuildFile; fileRef = 4E8770AB1B50F88D00377F0D /* Level2.sks */; };
+		4E8D01CB1B6D2DC2005851AB /* Level5.sks in Resources */ = {isa = PBXBuildFile; fileRef = 4E8D01C81B6D2DC2005851AB /* Level5.sks */; };
+		4E8D01CC1B6D2DC2005851AB /* Level6.sks in Resources */ = {isa = PBXBuildFile; fileRef = 4E8D01C91B6D2DC2005851AB /* Level6.sks */; };
+		4E8D01CD1B6D2DC2005851AB /* Level7.sks in Resources */ = {isa = PBXBuildFile; fileRef = 4E8D01CA1B6D2DC2005851AB /* Level7.sks */; };
 		4EFC4F7A1B54B4C500018E8B /* Level3.sks in Resources */ = {isa = PBXBuildFile; fileRef = 4EFC4F791B54B4C500018E8B /* Level3.sks */; };
 		4EFC4F7C1B54BD7700018E8B /* Level4.sks in Resources */ = {isa = PBXBuildFile; fileRef = 4EFC4F7B1B54BD7700018E8B /* Level4.sks */; };
 /* End PBXBuildFile section */
@@ -140,6 +143,9 @@
 		4E87709D1B4E354200377F0D /* SKTTimingFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKTTimingFunctions.swift; sourceTree = "<group>"; };
 		4E87709E1B4E354200377F0D /* Vector3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vector3.swift; sourceTree = "<group>"; };
 		4E8770AB1B50F88D00377F0D /* Level2.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level2.sks; sourceTree = "<group>"; };
+		4E8D01C81B6D2DC2005851AB /* Level5.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level5.sks; sourceTree = "<group>"; };
+		4E8D01C91B6D2DC2005851AB /* Level6.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level6.sks; sourceTree = "<group>"; };
+		4E8D01CA1B6D2DC2005851AB /* Level7.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level7.sks; sourceTree = "<group>"; };
 		4EFC4F791B54B4C500018E8B /* Level3.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level3.sks; sourceTree = "<group>"; };
 		4EFC4F7B1B54BD7700018E8B /* Level4.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level4.sks; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -191,6 +197,9 @@
 				4E8770221B4E2DA000377F0D /* GameScene.swift */,
 				4EFC4F7B1B54BD7700018E8B /* Level4.sks */,
 				4EFC4F791B54B4C500018E8B /* Level3.sks */,
+				4E8D01C81B6D2DC2005851AB /* Level5.sks */,
+				4E8D01C91B6D2DC2005851AB /* Level6.sks */,
+				4E8D01CA1B6D2DC2005851AB /* Level7.sks */,
 				4E8770241B4E2DA000377F0D /* GameViewController.swift */,
 				4E8770261B4E2DA000377F0D /* Main.storyboard */,
 				4E8770291B4E2DA000377F0D /* Images.xcassets */,
@@ -387,7 +396,8 @@
 		4E8770111B4E2DA000377F0D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0640;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Big Nerd ranch";
 				TargetAttributes = {
 					4E8770181B4E2DA000377F0D = {
@@ -433,10 +443,12 @@
 				4E8770811B4E2F3C00377F0D /* Icon128.png in Resources */,
 				4E8770821B4E2F3C00377F0D /* Icon16.png in Resources */,
 				4E8770741B4E2F3C00377F0D /* Icon50.png in Resources */,
+				4E8D01CC1B6D2DC2005851AB /* Level6.sks in Resources */,
 				4E8770841B4E2F3C00377F0D /* Icon32.png in Resources */,
 				4E87708F1B4E2F3C00377F0D /* sprites.atlas in Resources */,
 				4E87708A1B4E2F3C00377F0D /* cat_body.png in Resources */,
 				4E87708C1B4E2F3C00377F0D /* lose.mp3 in Resources */,
+				4E8D01CD1B6D2DC2005851AB /* Level7.sks in Resources */,
 				4E87708D1B4E2F3C00377F0D /* pop.mp3 in Resources */,
 				4E87707E1B4E2F3C00377F0D /* iTunesArtwork.png in Resources */,
 				4EFC4F7C1B54BD7700018E8B /* Level4.sks in Resources */,
@@ -446,6 +458,7 @@
 				4EFC4F7A1B54B4C500018E8B /* Level3.sks in Resources */,
 				4E87708E1B4E2F3C00377F0D /* win.mp3 in Resources */,
 				4E8770801B4E2F3C00377F0D /* Icon1024.png in Resources */,
+				4E8D01CB1B6D2DC2005851AB /* Level5.sks in Resources */,
 				4E87702D1B4E2DA000377F0D /* LaunchScreen.xib in Resources */,
 				4E8770871B4E2F3C00377F0D /* .BridgeSort in Resources */,
 				4E87707B1B4E2F3C00377F0D /* Icon72@2x.png in Resources */,
@@ -561,6 +574,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -630,8 +644,9 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = CatNap/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bignerdranch.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -644,8 +659,9 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = CatNap/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bignerdranch.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -665,6 +681,7 @@
 				);
 				INFOPLIST_FILE = CatNapTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bignerdranch.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CatNap.app/CatNap";
 			};
@@ -680,6 +697,7 @@
 				);
 				INFOPLIST_FILE = CatNapTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bignerdranch.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CatNap.app/CatNap";
 			};

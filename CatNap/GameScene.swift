@@ -8,19 +8,25 @@
 
 import SpriteKit
 
+protocol ImageCaptureDelegate {
+    func requestImagePicker()
+}
+
 class GameScene: SKScene , SKPhysicsContactDelegate {
     
     struct PhysicsCategory {
-        static let None: UInt32  = 0
-        static let Cat: UInt32   = 0b1
-        static let Block: UInt32 = 0b10
-        static let Bed: UInt32   = 0b100
-        static let Edge: UInt32 = 0b1000
-        static let Label: UInt32 = 0b10000
+        static let None: UInt32  =  0
+        static let Cat: UInt32   =  0b1
+        static let Block: UInt32 =  0b10
+        static let Bed: UInt32   =  0b100
+        static let Edge: UInt32 =   0b1000
+        static let Label: UInt32 =  0b10000
         static let Spring: UInt32 = 0b100000
-        static let Hook: UInt32 = 0b1000000
+        static let Hook: UInt32 =   0b1000000
     }
     
+    var imageCaptureDelegate : ImageCaptureDelegate?
+    var photoChanged: Bool = false
     var bedNode: SKSpriteNode!
     var catNode: SKSpriteNode!
     var label: SKLabelNode!
@@ -38,7 +44,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
             return
         }
         
-        let ceilingFix = SKPhysicsJointFixed.jointWithBodyA(hookBaseNode.physicsBody, bodyB: physicsBody, anchor: CGPointZero)
+        let ceilingFix = SKPhysicsJointFixed.jointWithBodyA(hookBaseNode.physicsBody!, bodyB: physicsBody!, anchor: CGPointZero)
         physicsWorld.addJoint(ceilingFix)
         
         ropeNode = SKSpriteNode(imageNamed: "rope")
@@ -58,10 +64,10 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
         
         addChild(hookNode)
         
-        let ropeJoint = SKPhysicsJointSpring.jointWithBodyA(hookBaseNode.physicsBody, bodyB: hookNode.physicsBody, anchorA: hookBaseNode.position, anchorB: CGPoint(x: hookNode.position.x, y: hookNode.position.y + hookNode.size.height/2))
+        let ropeJoint = SKPhysicsJointSpring.jointWithBodyA(hookBaseNode.physicsBody!, bodyB: hookNode.physicsBody!, anchorA: hookBaseNode.position, anchorB: CGPoint(x: hookNode.position.x, y: hookNode.position.y + hookNode.size.height/2))
         physicsWorld.addJoint(ropeJoint)
         
-        let range = SKRange(lowerLimit: 0.0, upperLimit: 0.0)
+        //range = SKRange(lowerLimit: 0.0, upperLimit: 0.0)
         //let ropeOrientConstraint = SKConstraint.orientToNode(hookNode, offset: range)
         //ropeNode.constraints = [ropeOrientConstraint]
         
@@ -72,19 +78,74 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
     func addSeeSaw() {
         let seesawBaseNode = childNodeWithName("seesawBase") as? SKSpriteNode
         if seesawBaseNode == nil {
-            println("Could find seesaw base");
+            print("Could find seesaw base");
             return
         }
         
         let seesawNode = childNodeWithName("seesaw") as? SKSpriteNode
         if seesawNode == nil {
-            println("Could not find seesaw")
+            print("Could not find seesaw")
             return
         }
         
-        let seesawPin = SKPhysicsJointPin.jointWithBodyA(seesawBaseNode?.physicsBody, bodyB: seesawNode?.physicsBody, anchor: seesawBaseNode!.position)
+        let seesawPin = SKPhysicsJointPin.jointWithBodyA((seesawBaseNode?.physicsBody)!, bodyB: (seesawNode?.physicsBody)!, anchor: seesawBaseNode!.position)
         physicsWorld.addJoint(seesawPin)
         
+    }
+    
+    
+    // parameter photoFrame should be a node that is named: photoframe
+    // this function will crob a image named picture into
+    // the photoframe and set it's physics body 
+    
+    func addPhotoToFrame(photoFrame: SKSpriteNode) {
+        let pictureNode = SKSpriteNode(imageNamed: "picture")
+        pictureNode.name = "picture"
+        
+        let maskNode = SKSpriteNode(imageNamed: "picture-frame-mask")
+        maskNode.name =  "mask"
+        
+        let cropNode = SKCropNode()
+        cropNode.addChild(pictureNode)
+        cropNode.maskNode = maskNode
+        photoFrame.addChild(cropNode)
+        
+        photoFrame.physicsBody = SKPhysicsBody(circleOfRadius: ((photoFrame.size.width * 0.975) / 2.0))
+        photoFrame.physicsBody?.categoryBitMask = PhysicsCategory.Block
+        photoFrame.physicsBody?.collisionBitMask = PhysicsCategory.Block | PhysicsCategory.Cat | PhysicsCategory.Edge
+        
+    }
+    func addPhotoFrameAtPosition(position: CGPoint) {
+        let photoFrame = SKSpriteNode(imageNamed: "picture-frame")
+        photoFrame.name = "photoframe"
+        photoFrame.position = position
+        
+        let pictureNode = SKSpriteNode(imageNamed: "picture")
+        pictureNode.name = "picture"
+        
+        let maskNode = SKSpriteNode(imageNamed: "picture-frame-mask")
+        maskNode.name = "mask"
+        
+        let cropNode = SKCropNode()
+        cropNode.addChild(pictureNode)
+        cropNode.maskNode = maskNode
+        
+        photoFrame.addChild(cropNode)
+        
+        photoFrame.physicsBody = SKPhysicsBody(circleOfRadius: ((photoFrame.size.width * 0.975) / 2.0))
+        photoFrame.physicsBody!.categoryBitMask = PhysicsCategory.Block
+        photoFrame.physicsBody!.collisionBitMask = PhysicsCategory.Block | PhysicsCategory.Cat | PhysicsCategory.Edge
+        addChild(photoFrame)
+        
+        
+        
+    }
+    
+    
+    func changePhotoTexture(texture: SKTexture) {
+        let photoNode = childNodeWithName("//picture") as! SKSpriteNode
+        photoNode.texture = texture
+        photoChanged = true
     }
     
     override func didMoveToView(view: SKView) {
@@ -112,7 +173,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
         catNode.physicsBody!.collisionBitMask = PhysicsCategory.Block | PhysicsCategory.Edge | PhysicsCategory.Spring
         catNode.physicsBody!.contactTestBitMask = PhysicsCategory.Bed | PhysicsCategory.Edge
         // Play background music
-        SKTAudio.sharedInstance().playBackgroundMusic("backgroundMusic.mp3")
+        SKTAudio.sharedInstance.playBackgroundMusic("backgroundMusic.mp3")
         
         //Setup PhysicsContactDelegate
         physicsWorld.contactDelegate = self
@@ -123,6 +184,23 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
         makeCompoundNode()
         
         addSeeSaw()
+        
+        enumerateChildNodesWithName("photoframe") { node, _ in
+            self.addPhotoToFrame(node as! SKSpriteNode)
+        }
+        
+        let backgroundDesat = SKSpriteNode(imageNamed: "background-desat")
+        let label = SKLabelNode(fontNamed: "Zapfino")
+        label.text = "Cat Nap"
+        label.fontSize = 296
+        
+        let cropNode = SKCropNode()
+        cropNode.addChild(backgroundDesat)
+        cropNode.maskNode = label
+        
+        if let background = childNodeWithName("Background") {
+            background.addChild(cropNode)
+        }
     }
     
     func inGameMessage(text: String) {
@@ -148,8 +226,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
     
     class func level(levelNum: Int) -> GameScene? {
         let scene = GameScene(fileNamed: "Level\(levelNum)")
-        scene.currentLevel = levelNum
-        scene.scaleMode = .AspectFill
+        scene!.currentLevel = levelNum
+        scene!.scaleMode = .AspectFill
         return scene
     }
     
@@ -161,7 +239,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
         catNode.physicsBody!.contactTestBitMask = PhysicsCategory.None
         catNode.texture = SKTexture(imageNamed: "cat_awake")
         
-        SKTAudio.sharedInstance().pauseBackgroundMusic()
+        SKTAudio.sharedInstance.pauseBackgroundMusic()
         runAction(SKAction.playSoundFileNamed("lose.mp3", waitForCompletion: false))
         inGameMessage("Try again...")
         runAction(SKAction.sequence([
@@ -190,12 +268,28 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
     }
     
     func newGame() {
-        view!.presentScene(GameScene.level(currentLevel))
+        if let scene = GameScene.level(currentLevel) {
+            scene.scaleMode = scaleMode
+            scene.imageCaptureDelegate = imageCaptureDelegate
+            view!.presentScene(GameScene.level(currentLevel))
+        }
     }
     
     func sceneTouched(location: CGPoint) {
         let targetNode = self.nodeAtPoint(location)
         
+        let nodes = self.nodesAtPoint(location)
+        for node in nodes {
+            if let nodeName = node.name {
+                if nodeName == "photoframe" {
+                    if !photoChanged {
+                        imageCaptureDelegate?.requestImagePicker()
+                        return
+                        
+                    }
+                }
+            }
+        }
         
         if targetNode.parent?.name == "compoundNode" {
             targetNode.parent!.removeFromParent()
@@ -224,11 +318,12 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
             releaseHook()
         }
     }
+   
     
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         /* Called when a touch begins */
-        let touch = touches.first as! UITouch
-        sceneTouched(touch.locationInNode(self))
+        let touch = touches.first
+        sceneTouched(touch!.locationInNode(self))
     }
    
     override func update(currentTime: CFTimeInterval) {
@@ -244,7 +339,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
     
     func win() {
         
-        if (currentLevel < 4) {
+        if (currentLevel < 5) {
             currentLevel++
         }
         catNode.physicsBody = nil
@@ -262,7 +357,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
             SKTexture(imageNamed: "cat_curlup1"),
             SKTexture(imageNamed: "cat_curlup2"),
             SKTexture(imageNamed: "cat_curlup3")], timePerFrame: 0.25))
-        SKTAudio.sharedInstance().pauseBackgroundMusic()
+        SKTAudio.sharedInstance.pauseBackgroundMusic()
         runAction(SKAction.playSoundFileNamed("win.mp3", waitForCompletion: false))
     }
     
@@ -283,7 +378,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
             if label.userData == nil {
                 label.userData = NSMutableDictionary(object: 1 as Int, forKey: "bounceCount")
             } else {
-                var bounceCount = label.userData!["bounceCount"] as! NSNumber
+                let bounceCount = label.userData!["bounceCount"] as! NSNumber
                 let bc = Int(bounceCount.intValue + 1)
                 if bc == 4 {
                     label.removeFromParent()

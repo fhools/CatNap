@@ -30,25 +30,25 @@ public class SKTAudio {
   public var backgroundMusicPlayer: AVAudioPlayer?
   public var soundEffectPlayer: AVAudioPlayer?
 
-  public class func sharedInstance() -> SKTAudio {
-    return SKTAudioInstance
-  }
-
+  static let sharedInstance = SKTAudio()
+    
   public func playBackgroundMusic(filename: String) {
     let url = NSBundle.mainBundle().URLForResource(filename, withExtension: nil)
     if (url == nil) {
-      println("Could not find file: \(filename)")
+      print("Could not find file: \(filename)")
       return
     }
 
-    var error: NSError? = nil
-    backgroundMusicPlayer = AVAudioPlayer(contentsOfURL: url, error: &error)
-    if let player = backgroundMusicPlayer {
-      player.numberOfLoops = -1
-      player.prepareToPlay()
-      player.play()
-    } else {
-      println("Could not create audio player: \(error!)")
+  
+    do {
+        let player = try AVAudioPlayer(contentsOfURL: url!)
+        
+            player.numberOfLoops = -1
+            player.prepareToPlay()
+            player.play()
+        
+    } catch let error as NSError {
+        print(error.localizedDescription)
     }
   }
 
@@ -68,23 +68,20 @@ public class SKTAudio {
     }
   }
 
-  public func playSoundEffect(filename: String) {
-    let url = NSBundle.mainBundle().URLForResource(filename, withExtension: nil)
-    if (url == nil) {
-      println("Could not find file: \(filename)")
-      return
+    public func playSoundEffect(filename: String) {
+        let url = NSBundle.mainBundle().URLForResource(filename, withExtension: nil)
+        if (url == nil) {
+            print("Could not find file: \(filename)")
+            return
+        }
+        
+        do {
+            let player = try AVAudioPlayer(contentsOfURL: url!)
+            player.numberOfLoops = 0
+            player.prepareToPlay()
+            player.play()
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
     }
-
-    var error: NSError? = nil
-    soundEffectPlayer = AVAudioPlayer(contentsOfURL: url, error: &error)
-    if let player = soundEffectPlayer {
-      player.numberOfLoops = 0
-      player.prepareToPlay()
-      player.play()
-    } else {
-      println("Could not create audio player: \(error!)")
-    }
-  }
 }
-
-private let SKTAudioInstance = SKTAudio()
